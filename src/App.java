@@ -9,12 +9,22 @@ import Animals.*;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class App {
     public static List<Animals> animal_list;
     public static void main(String[] args) throws Exception {
         animal_list = new ArrayList<>();
         Scanner iScanner = new Scanner(System.in);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d-MM-yyyy");
+        animal_list.add(new Cat("Хельга", LocalDate.parse("04-03-2023",formatter)));
+        animal_list.add(new Dog("Дружок", LocalDate.parse("20-05-2021",formatter)));
+        animal_list.add(new Hamster("Глюк", LocalDate.parse("29-07-2022",formatter)));
+        animal_list.add(new Horse("Рысак", LocalDate.parse("20-09-2019",formatter)));
+        animal_list.add(new Camel("Ланцелот", LocalDate.parse("24-11-2018",formatter)));
+        animal_list.add(new Donkey("Иа", LocalDate.parse("15-10-2021",formatter)));
+
         try {
             head_menu(iScanner);
         } catch (AnimalsIsNotCreateException e) {
@@ -165,7 +175,7 @@ public class App {
         for (Command com : Command.values()) {
             System.out.printf("%d. %s\r\n", i++, com);
         }
-        System.out.printf("%d. Назад", i);
+        System.out.printf("%d. Назад\r\n", i);
         sel_menu = inputData("Выберите команду: ", iScanner);
         if (sel_menu > 0 && sel_menu < i) {
                 animal.setCommands(Command.values()[sel_menu - 1]);
@@ -175,7 +185,7 @@ public class App {
     }
     public static void printAnimals() {
         for (int i = 0; i < animal_list.size(); i++) {
-            System.out.printf("%d. %s\r\n", i + 1, animal_list.get(i));
+            System.out.printf("%d. %s", i + 1, animal_list.get(i));
         }
         if (animal_list.size() == 0) {
             System.out.println("Питомник пуст");
