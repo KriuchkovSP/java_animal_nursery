@@ -7,13 +7,13 @@ public abstract class Animals {
     private int id;
     private String name;
     private LocalDate dateOfBirth;
-    private PetCommands commands;
+    private String commands;
     private static List<Animals> animals = new ArrayList<>();
-    
+    private PetCommands command = new PetCommands();
     public int getId() {return id;}
     public String getName() {return name;}
     public LocalDate getDateOfBirth(){return dateOfBirth;}
-    public PetCommands getCommands(){return commands;}
+    public String getCommands(){return command.toString();}
     
     public void setId() {}
     public int setName(String name) {
@@ -28,7 +28,7 @@ public abstract class Animals {
     }
 
     public void setCommands(Command comm) {
-        commands.addCommand(comm);
+        command.addCommand(comm);
     }
     
     public Animals(String name, LocalDate dateOfBirth)  throws AnimalsIsNotCreateException {

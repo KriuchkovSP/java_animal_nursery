@@ -1,17 +1,14 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.concurrent.ThreadLocalRandom;
 
 import Animals.Animals;
 import Animals.AnimalsIsNotCreateException;
 import Animals.*;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
+
+import java.time.DateTimeException;
 import java.time.LocalDate;
-import java.util.Date;
 
 public class App {
     public static List<Animals> animal_list;
@@ -27,8 +24,10 @@ public class App {
             iScanner.close();
         }
     }
+
     public static LocalDate inputDate(Scanner iScanner) {
-        System.out.printf("День рождения животного");
+        System.out.println();
+        System.out.printf("День рождения животного\r\n");
         Boolean check = false;
         LocalDate now = LocalDate.now();
         int year = 1980;
@@ -51,11 +50,24 @@ public class App {
                 if (day >=1 && day <= 31) {check = true;}
             }
             check = false;
-            date = LocalDate.of(year, month, day);
-            if(date.isBefore(now) || date.isEqual(now)) {check = true;}
+            if (isDateValid(year, month, day)) {
+                date = LocalDate.of(year, month, day);
+                if(date.isBefore(now) || date.isEqual(now) ) {check = true;}
+            }
         }
         return date;
     }
+
+    public static boolean isDateValid(int year, int month, int day) {
+        boolean dateIsValid = true;
+        try {
+            LocalDate.of(year, month, day);
+        } catch (DateTimeException e) {
+            dateIsValid = false;
+        }
+        return dateIsValid;
+    }
+    
     public static void createAnimal(Scanner iScanner) {
         int sel_menu = -1;
         System.out.println();
@@ -92,7 +104,11 @@ public class App {
                     animal_list.add(new Donkey(name, date));
                     break;
             }
-            System.out.println(animal_list.get(0));
+            if (animal_list.size() > 0) {
+                System.out.println(animal_list.get(0));
+            } else {
+                System.out.println("Питомник пуст");
+            }
             
         } catch (AnimalsIsNotCreateException e) {
             System.out.println(e.getMessage());
@@ -111,14 +127,65 @@ public class App {
         return num;
     }
 
-    public static selAnimal(Scanner iScanner) {
-        
+    public static void selAnimal(Scanner iScanner) throws AnimalsIsNotCreateException{
+        printAnimals();
+        int id = -1;
+        System.out.println();
+        while ((animal_list.size() > 0) &&((id < 1) || id > animal_list.size())) {
+            id = inputData("Выберите животное: ", iScanner);
+        }
+        if (id > 0) {
+            Animals anim = animal_list.get(id - 1);
+            System.out.printf("%sИзученные команды: %s\r\n", anim, anim.getCommands());
+            int sel_menu = -1;
+            System.out.println("1. Обучить животное");
+            System.out.println("2. Назад");
+            sel_menu = inputData("Выберите пункт меню: ", iScanner);
+            switch (sel_menu) {
+                case 1:
+                    train_animal(anim, iScanner);
+                    break;
+                case 2:
+                    head_menu(iScanner);
+                    break;
+                default:
+                    selAnimal(iScanner);
+                    break;
+            }
+        } else {
+            System.out.println("Питомник пуст");
+            head_menu(iScanner);
+        }
     }
 
+    public static void train_animal(Animals animal, Scanner iScanner) throws AnimalsIsNotCreateException {
+        int sel_menu = -1;
+        System.out.println("Какой команде обучить:");
+        int i = 1;
+        for (Command com : Command.values()) {
+            System.out.printf("%d. %s\r\n", i++, com);
+        }
+        System.out.printf("%d. Назад", i);
+        sel_menu = inputData("Выберите команду: ", iScanner);
+        if (sel_menu > 0 && sel_menu < i) {
+                animal.setCommands(Command.values()[sel_menu - 1]);
+        } else {
+                selAnimal(iScanner);
+        }
+    }
+    public static void printAnimals() {
+        for (int i = 0; i < animal_list.size(); i++) {
+            System.out.printf("%d. %s\r\n", i + 1, animal_list.get(i));
+        }
+        if (animal_list.size() == 0) {
+            System.out.println("Питомник пуст");
+        }
+    }
+    
     public static void head_menu(Scanner iScanner) throws AnimalsIsNotCreateException {
         int sel_menu = -1;
         System.out.println();
-        System.out.println("Зверинец");
+        System.out.println("Питомник");
         System.out.println("1. Добавить животное");
         System.out.println("2. Выбрать животное");
         System.out.println("3. Вывести всех животных");
@@ -134,7 +201,7 @@ public class App {
                 head_menu(iScanner);
                 break;
             case 3:
-                getAnimals();
+                printAnimals();
                 head_menu(iScanner);
                 break;
             case 4:

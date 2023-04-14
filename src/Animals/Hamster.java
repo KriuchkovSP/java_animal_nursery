@@ -11,7 +11,7 @@ public class Hamster extends Pet implements BaseInterface{
 
     @Override
     public String toString() {
-        return String.format("ID: %d, Name: %s, DateOfBirth: %d-%d-%d, Type: %s, Subspecies: %s, Commands: %s", 
+        return String.format("ID: %d, Name: %s, DateOfBirth: %d-%d-%d, Type: %s, Subspecies: %s\r\n", 
          this.getId(), this.getName(), this.getDateOfBirth().getDayOfMonth(), this.getDateOfBirth().getMonthValue(), 
          this.getDateOfBirth().getYear(), this.getType(), this.getSubcpecies());
     }
