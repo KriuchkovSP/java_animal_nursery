@@ -7,7 +7,6 @@ public abstract class Animals {
     private int id;
     private String name;
     private LocalDate dateOfBirth;
-    private String commands;
     private static List<Animals> animals = new ArrayList<>();
     private PetCommands command = new PetCommands();
     public int getId() {return id;}

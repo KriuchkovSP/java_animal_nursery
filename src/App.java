@@ -13,17 +13,25 @@ import java.time.format.DateTimeFormatter;
 
 public class App {
     public static List<Animals> animal_list;
+    public static Counter counter_animals;
     public static void main(String[] args) throws Exception {
         animal_list = new ArrayList<>();
+        counter_animals = new Counter();
         Scanner iScanner = new Scanner(System.in);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d-MM-yyyy");
         animal_list.add(new Cat("Хельга", LocalDate.parse("04-03-2023",formatter)));
+        counter_animals.add();
         animal_list.add(new Dog("Дружок", LocalDate.parse("20-05-2021",formatter)));
+        counter_animals.add();
         animal_list.add(new Hamster("Глюк", LocalDate.parse("29-07-2022",formatter)));
+        counter_animals.add();
         animal_list.add(new Horse("Рысак", LocalDate.parse("20-09-2019",formatter)));
+        counter_animals.add();
         animal_list.add(new Camel("Ланцелот", LocalDate.parse("24-11-2018",formatter)));
+        counter_animals.add();
         animal_list.add(new Donkey("Иа", LocalDate.parse("15-10-2021",formatter)));
+        counter_animals.add();
 
         try {
             head_menu(iScanner);
@@ -116,6 +124,7 @@ public class App {
             }
             if (animal_list.size() > 0) {
                 System.out.println(animal_list.get(0));
+                counter_animals.add();
             } else {
                 System.out.println("Питомник пуст");
             }
@@ -190,6 +199,7 @@ public class App {
         if (animal_list.size() == 0) {
             System.out.println("Питомник пуст");
         }
+        System.out.printf("Всего животных %d\r\n",counter_animals.getCounter());
     }
     
     public static void head_menu(Scanner iScanner) throws AnimalsIsNotCreateException {
